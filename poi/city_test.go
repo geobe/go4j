@@ -1,37 +1,37 @@
-package geo
+package poi
 
 import (
-	"testing"
 	"fmt"
+	"github.com/geobe/go4j/loc"
 	"github.com/geobe/go4j/permute"
+	"testing"
 	"time"
 )
-
-// teste die Entfernungsberechnungen
-func TestDist(t *testing.T) {
-	sfo := Location{lat: 37.8, lon: 122.4}
-	stp := Location{lat: 59.9, lon: -30.3}
-	hh := Location{lat: 53.5, lon: 10.}
-	b := Location{lat: 52.5, lon: 13.3}
-	t.Logf("\nDist(SFO-STP) = %.0f km", sfo.Dist(stp))
-	t.Logf("\nDist(HH-B) = %.0f km", hh.Dist(b))
-}
 
 // teste, ob Dist auch für City Objekte funktioniert
 func TestCities(t *testing.T) {
 	for _, city := range GermanCities {
-		fmt.Printf("Luftlinie von Zwickau nach %s sind %.0f km\n", city.name, Zwickau.Dist(city))
+		fmt.Printf("Z -> %s = %.0f km\n",
+			city.name, Zwickau.Dist(city))
 	}
 }
 
+// teste Getter auf City
+func TestGetLat(t *testing.T) {
+	b := City{loc.New(52.507, 13.144),
+		"Berlin", 3470000}
+	t.Logf("B.Lat() = %v\n", b.Lat())
+	t.Logf("B.Location = %v\n", b.Location)
+}
+
 // teste die DistanceTable
-func xTestDistanceTable(t *testing.T) {
+func TestDistanceTable(t *testing.T) {
 	var from, to int
-	for from = 0; from < len(GermanCities) - 1; from++ {
+	for from = 0; from < len(GermanCities)-1; from++ {
 		for to = from + 1; to < len(GermanCities); to++ {
 			fmt.Printf("%v -> %v = %.0f km\n",
-				GermanCities[from].name, GermanCities[to].name,
-				CityDistanceTable[from << 8 + to])
+				GermanCities[from].Name(), GermanCities[to].Name(),
+				CityDistanceTable[from<<8+to])
 		}
 	}
 }
@@ -42,7 +42,7 @@ func TestCalculateRoundtrip(t *testing.T) {
 	min = 0.
 	max = 0.
 	start := time.Now()
-	route := permute.NewPermutation(11)
+	route := permute.NewPermutation(9)
 	for {
 		dist = CalculateRoundtrip(0, CityDistanceTable, route)
 		if dist > max {

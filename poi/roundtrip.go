@@ -1,21 +1,21 @@
-package geo
+package poi
 
 import (
-	"github.com/geobe/go4j/permute"
 	"bytes"
+	"github.com/geobe/go4j/permute"
 )
 
 func CalculateRoundtrip(first int, dt map[int]float64, sequence permute.Permutation) (dist float64) {
 	var previous int
 	for i, val := range sequence {
 		if i == 0 {
-			dist += dt[first << 8 + int(val)]
+			dist += dt[first<<8+int(val)]
 		} else {
-			dist += dt[previous << 8 + int(val)]
+			dist += dt[previous<<8+int(val)]
 		}
 		previous = int(val)
 	}
-	dist += dt[previous << 8 + first]
+	dist += dt[previous<<8+first]
 	return
 }
 

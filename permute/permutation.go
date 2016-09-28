@@ -1,8 +1,8 @@
 package permute
 
 import (
-	"sort"
 	"fmt"
+	"sort"
 )
 
 // eine permutation wird als slice von n
@@ -14,16 +14,18 @@ type Permutation []int
 func (p Permutation) Len() int {
 	return len(p)
 }
+
 // Methode für das Sort interface
 func (p Permutation) Less(i, j int) bool {
 	return p[i] < p[j]
 }
+
 // Methode für das Sort interface
 func (p Permutation) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
 }
 
-func (p Permutation) copy() Permutation {
+func (p Permutation) workcopy() Permutation {
 	n := len(p)
 	var arr []int = make([]int, n)
 	var i int
@@ -56,19 +58,19 @@ func (permutation Permutation) Next() (seq Permutation, end bool) {
 	end = done(permutation)
 	if !end {
 		var (
-			tail Permutation
+			tail  Permutation
 			found bool
-			p int
+			p     int
 		)
 		for pos := len(permutation) - 2; pos > 0; pos-- {
-			tail = permutation[pos:]               // vom ende her auf die Permutation sehen
+			tail = permutation[pos:] // vom ende her auf die Permutation sehen
 			if done(tail) {
-				p, found = xpos(tail, permutation[pos - 1])
+				p, found = xpos(tail, permutation[pos-1])
 				// gibt es noch einen größeren wert im tail?
 				if found {
 					// zwei werte austauschen
-					permutation[pos - 1], permutation[pos + p] =
-						permutation[pos + p], permutation[pos - 1]
+					permutation[pos-1], permutation[pos+p] =
+						permutation[pos+p], permutation[pos-1]
 					sort.Sort(tail)
 					break
 				}
@@ -80,7 +82,7 @@ func (permutation Permutation) Next() (seq Permutation, end bool) {
 			}
 		}
 	}
-	seq = permutation//.copy()
+	seq = permutation //.copy()
 	return
 }
 
@@ -89,10 +91,10 @@ func (permutation Permutation) PermuteFirst(pos int) (seq Permutation) {
 	if int(pos) > len(permutation) {
 		panic(fmt.Sprintf("illegal argument %d: pos too large", pos))
 	}
-	seq = permutation.copy()
+	seq = permutation.workcopy()
 	swap := seq[pos]
 	for i := pos; i > 0; i-- {
-		seq[i] = seq[i - 1]
+		seq[i] = seq[i-1]
 	}
 	seq[0] = swap
 	return
@@ -100,11 +102,11 @@ func (permutation Permutation) PermuteFirst(pos int) (seq Permutation) {
 
 // nächste Permutation nur im hinteren Teil der Permutation durchführen
 func (permutation Permutation) NextTail() (seq Permutation, end bool) {
-	seq = permutation//.copy()
+	seq = permutation //.copy()
 	tail := seq[1:]
 	tail, end = tail.Next()
 	for i := int(1); int(i) < len(seq); i++ {
-		seq[i] = tail[i - 1]
+		seq[i] = tail[i-1]
 	}
 	return
 }
@@ -112,8 +114,8 @@ func (permutation Permutation) NextTail() (seq Permutation, end bool) {
 // überprüfe, ob die werte in slice s strikt kleiner werdend sind. Wenn ja, ist das ende
 // der permutationen erreicht.
 func done(s []int) bool {
-	for i := 0; i < len(s) - 1; i++ {
-		if s[i] < s[i + 1] {
+	for i := 0; i < len(s)-1; i++ {
+		if s[i] < s[i+1] {
 			return false
 		}
 	}

@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	permute "github.com/geobe/go4j/permute"
-	"sync"
-	"time"
 	"runtime"
 	"runtime/debug"
+	"sync"
+	"time"
 )
 
 func main() {
@@ -15,7 +15,7 @@ func main() {
 	fmt.Printf("Prozessoren: %d\n", cpus)
 	runtime.GOMAXPROCS(cpus)
 	fmt.Printf("GOGC was %d%%\n", debug.SetGCPercent(-1))
-	perm := permute.NewPermutation(size-1)
+	perm := permute.NewPermutation(size - 1)
 	fmt.Println(perm)
 	start := time.Now()
 	for {
@@ -77,7 +77,7 @@ func xTestPermuteTail(c int) {
 	for i := 0; i < len(perm); i++ {
 		head = perm.PermuteFirst(int(i))
 		//fmt.Println(head)
-		inner:
+	inner:
 		for {
 			head, end = head.NextTail()
 			if !end {
