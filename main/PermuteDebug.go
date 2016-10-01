@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	permute "github.com/geobe/go4j/permute"
+	"github.com/geobe/go4j/permute"
 	"runtime"
 	"runtime/debug"
 	"sync"
@@ -65,26 +65,6 @@ func permuteTail(wg *sync.WaitGroup, perm permute.Permutation) {
 			end := time.Now()
 			fmt.Printf("tail permutations of %d took %v \n", len(perm), end.Sub(start))
 			break
-		}
-	}
-}
-
-func xTestPermuteTail(c int) {
-	//fmt.Println("running TestPermuteTail")
-	perm := permute.NewPermutation(c)
-	var head permute.Permutation
-	var end bool
-	for i := 0; i < len(perm); i++ {
-		head = perm.PermuteFirst(int(i))
-		//fmt.Println(head)
-	inner:
-		for {
-			head, end = head.NextTail()
-			if !end {
-				//fmt.Println(head)
-			} else {
-				break inner
-			}
 		}
 	}
 }
