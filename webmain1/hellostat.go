@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 	"os"
 )
 
@@ -24,19 +24,18 @@ Geh doch mal zu einer statischen Seite</a>.<br>
 `
 
 func index(writer http.ResponseWriter,
-request *http.Request) {
+	request *http.Request) {
 	fmt.Fprintf(writer, html,
 		request.URL.Path[1:])
 }
 
 func err(writer http.ResponseWriter,
-request *http.Request) {
+	request *http.Request) {
 	fmt.Fprintf(writer, "Error with path %s",
 		request.URL.Path[1:])
 }
 
 func main() {
-
 	// hole einen DefaultServeMux
 	mux := http.NewServeMux()
 	// finde Working directory = GOPATH
@@ -47,16 +46,14 @@ func main() {
 	// unter der URL /static/ werden files bereitgestellt,
 	// Präfix /static/ wird abgeschnitten
 	mux.Handle("/static/", http.StripPrefix("/static/", files))
-
 	// index
 	mux.HandleFunc("/index", index)
 	// error
 	mux.HandleFunc("/err", err)
-
 	// konfiguriere server
 	server := &http.Server{
-		Addr:           "0.0.0.0:8090",
-		Handler:        mux,
+		Addr:    "0.0.0.0:8090",
+		Handler: mux,
 	}
 	// und starte ihn
 	server.ListenAndServe()
