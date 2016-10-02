@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	htmltemplate "html/template"
+	"html/template"
 	"net/http"
 	"os"
 	"time"
 )
 
-var template1 *htmltemplate.Template
+var template1 *template.Template
 
 func idx(writer http.ResponseWriter, request *http.Request) {
 	// aktuelle Zeit einschließlich Datum
@@ -34,12 +34,12 @@ func err1(writer http.ResponseWriter, request *http.Request) {
 		request.URL.Path[1:])
 }
 
-func prep(templatedir string, fn ...string) (t *htmltemplate.Template) {
+func prep(templatedir string, fn ...string) (t *template.Template) {
 	var files []string
 	for _, file := range fn {
 		files = append(files, fmt.Sprintf("%s/%s.html", templatedir, file))
 	}
-	t = htmltemplate.Must(htmltemplate.ParseFiles(files...))
+	t = template.Must(template.ParseFiles(files...))
 	return
 }
 

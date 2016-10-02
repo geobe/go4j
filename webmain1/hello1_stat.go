@@ -23,10 +23,8 @@ Geh doch mal zu einer statischen Seite</a>.<br>
 </html>
 `
 
-func index(writer http.ResponseWriter,
-	request *http.Request) {
-	fmt.Fprintf(writer, html,
-		request.URL.Path[1:])
+func index(writer http.ResponseWriter, request *http.Request) {
+	fmt.Fprintf(writer, html, request.URL.Path[1:])
 }
 
 func err(writer http.ResponseWriter,
