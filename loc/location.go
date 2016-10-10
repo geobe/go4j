@@ -20,6 +20,12 @@ type Locator interface {
 	LatLon() (float64, float64)
 }
 
+// Interface für Objekte, deren Distanz
+// berechnet werden kann
+type Distancer interface {
+	Dist(lctr Locator) float64
+}
+
 // Umrechnung ° in radian
 var toRad = math.Pi / 180
 
@@ -29,12 +35,12 @@ const rEarth = 6371.
 // Methode berechnet die Entfernung zwischen
 // einer Location und einem Locator Objekt
 func (l Location) Dist(lctr Locator) float64 {
-	return dist(l, lctr)
+	return Dist(l, lctr)
 }
 
 // Function berechnet die Entfernung
 // zwischen zwei Locator Objekten
-func dist(lctr1, lctr2 Locator) float64 {
+func Dist(lctr1, lctr2 Locator) float64 {
 	lat1, lon1 := lctr1.LatLon()
 	lat2, lon2 := lctr2.LatLon()
 	phi1 := lat1 * toRad
